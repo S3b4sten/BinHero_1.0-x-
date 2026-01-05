@@ -1,0 +1,73 @@
+site:
+  name: BinHero
+  description: Marketplace de retours avec prix dynamiques
+  currency: CAD
+  language: fr
+
+users:
+  roles:
+    - admin
+    - vendeur
+    - acheteur
+
+products:
+  source:
+    - amazon_returns
+    - ebay_auctions
+    - ali_express_clearance
+    - walmart_overstock
+    - best_buy_open_box
+    - target_clearance
+    - liquidation
+  categories:
+    - électronique
+    - vêtements
+    - maison
+    - jouets
+    - sport
+    - beauté
+    - outils
+  attributes:
+    - id
+    - name
+    - category
+    - condition
+    - price_initial
+    - price_current
+    - Deadline_sale
+    - Day_in_stock
+    - stock_quantity
+    - description
+    - images
+
+pricing:
+  dynamic: true
+  strategy:
+    Day_1: 85%
+    Day_2: 75%
+    Day_3: 65%
+    Day_4: 55%
+    Day_5: 45%
+    Day_6: 35%
+    Day_7: 25%
+
+features:
+  search: true
+  categories: true
+  favorites: true
+  cart: true
+  checkout: true
+  favorites: true
+  reviews: true
+  #notifications: true
+
+
+payments:
+  methods:
+    - credit_card
+    - paypal
+    - apple_pay
+
+logistics:
+  pickup: in_store
+  returns: disabled
