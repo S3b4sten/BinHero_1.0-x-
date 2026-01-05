@@ -1,0 +1,12 @@
+comment créer un siteweb accessible par le web
+
+Si je veux qu'une photo prise sur un telephone soit transmise au serveur d'une page web comment ca foncitonne
+
+comment créer une base de donnée
+
+est-ce qu'une base de donnée peut être n'importe quoi
+
+comment centraliser une base de donnée dans un projet 
+
+"descript du projet" comment devrais-je mis prendre
+
