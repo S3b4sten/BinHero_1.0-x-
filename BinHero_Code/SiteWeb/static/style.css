@@ -1,0 +1,49 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+    background-color: #f7f7f7;
+}
+
+h1 {
+    color: #2c3e50;
+}
+
+form {
+    margin-bottom: 30px;
+    background: #ecf0f1;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #2ecc71;
+}
+
+.product {
+    background: #fff;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+}
+
+.product strong {
+    font-size: 18px;
+}

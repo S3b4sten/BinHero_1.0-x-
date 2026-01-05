@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>BinHero – MVP</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>BinHero – MVP</h1>
+
+    <h2>Ajouter un produit</h2>
+    <form method="post" action="/">
+        <input name="name" placeholder="Nom" required>
+        <input name="category" placeholder="Catégorie" required>
+        <input name="condition" placeholder="État" required>
+        <input name="price" placeholder="Prix" required>
+        <input name="quantity" placeholder="Quantité" required>
+        <textarea name="description" placeholder="Description"></textarea>
+        <button type="submit">Ajouter</button>
+    </form>
+
+    <h2>Produits disponibles</h2>
+    <div id="products">
+        <!-- Les produits seront injectés par Flask -->
+        {% for p in products %}
+        <div class="product">
+            <strong>{{ p.name }}</strong><br>
+            Catégorie : {{ p.category }}<br>
+            État : {{ p.condition }}<br>
+            Prix : {{ p.price_initial }} $<br>
+            En stock depuis : {{ p.day_in_stock }} jours<br>
+            Quantité : {{ p.stock_quantity }}<br>
+            Description : {{ p.description }}
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
