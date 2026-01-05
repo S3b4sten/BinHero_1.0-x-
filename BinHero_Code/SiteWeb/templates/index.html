@@ -2,37 +2,76 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>BinHero – MVP</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BinHero Market</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>BinHero – MVP</h1>
 
-    <h2>Ajouter un produit</h2>
-    <form method="post" action="/">
-        <input name="name" placeholder="Nom" required>
-        <input name="category" placeholder="Catégorie" required>
-        <input name="condition" placeholder="État" required>
-        <input name="price" placeholder="Prix" required>
-        <input name="quantity" placeholder="Quantité" required>
-        <textarea name="description" placeholder="Description"></textarea>
-        <button type="submit">Ajouter</button>
-    </form>
+    <nav class="navbar">
+        <div class="logo">BinHero ♻️</div>
+    </nav>
 
-    <h2>Produits disponibles</h2>
-    <div id="products">
-        <!-- Les produits seront injectés par Flask -->
-        {% for p in products %}
-        <div class="product">
-            <strong>{{ p.name }}</strong><br>
-            Catégorie : {{ p.category }}<br>
-            État : {{ p.condition }}<br>
-            Prix : {{ p.price_initial }} $<br>
-            En stock depuis : {{ p.day_in_stock }} jours<br>
-            Quantité : {{ p.stock_quantity }}<br>
-            Description : {{ p.description }}
-        </div>
-        {% endfor %}
+    <div class="container">
+        
+        <section class="scan-section">
+            <div class="scan-card">
+                <h2>Vendre un objet</h2>
+                <p>Prends une photo, l'IA s'occupe du reste.</p>
+                
+                <form method="post" enctype="multipart/form-data" class="scan-form">
+                    <label for="cameraInput" class="custom-file-upload">
+                        📷 Scanner un nouvel objet
+                    </label>
+                    <input id="cameraInput" type="file" name="photo" accept="image/*" capture="environment" onchange="this.form.submit()">
+                    
+                    <div id="loading-msg" style="display:none; margin-top:10px;">⏳ Analyse en cours...</div>
+                </form>
+            </div>
+        </section>
+
+        <section class="products-section">
+            <h2>Objets en vente</h2>
+            
+            {% if products %}
+            <div class="product-grid">
+                {% for p in products %}
+                <article class="product-card">
+                    <div class="card-image">
+                        {% if p.image_filename %}
+                            <img src="{{ url_for('static', filename='uploads/' + p.image_filename) }}" alt="{{ p.name }}">
+                        {% else %}
+                            <div class="no-image">Pas d'image</div>
+                        {% endif %}
+                        <span class="category-tag">{{ p.category }}</span>
+                    </div>
+
+                    <div class="card-content">
+                        <div class="card-header">
+                            <h3>{{ p.name }}</h3>
+                            <span class="price">{{ p.estimated_price }} $</span>
+                        </div>
+                        <p class="condition">État : <span class="badge {{ p.condition|lower }}">{{ p.condition }}</span></p>
+                        <p class="description">{{ p.description }}</p>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+            {% else %}
+                <div class="empty-state">
+                    <p>Aucun objet en stock. Scannez votre premier article !</p>
+                </div>
+            {% endif %}
+        </section>
+
     </div>
+
+    <script>
+        const input = document.getElementById('cameraInput');
+        input.addEventListener('change', () => {
+            document.getElementById('loading-msg').style.display = 'block';
+        });
+    </script>
 </body>
 </html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Panier – BinHero</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<h1>Votre panier</h1>
+
+{% if cart_items %}
+<ul>
+    {% for p in cart_items %}
+    <li>
+        <strong>{{ p.name }}</strong> – {{ p.price_initial }} $
+    </li>
+    {% endfor %}
+</ul>
+<p><strong>Total : {{ total }} $</strong></p>
+<a href="{{ url_for('index') }}"><button>Retour aux produits</button></a>
+{% else %}
+<p>Votre panier est vide.</p>
+<a href="{{ url_for('index') }}"><button>Retour aux produits</button></a>
+{% endif %}
+</body>
+</html>
