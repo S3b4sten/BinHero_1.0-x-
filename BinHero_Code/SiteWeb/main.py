@@ -1,14 +1,17 @@
-# main.py
+# SiteWeb/main.py
 import base64
 import os
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field # <-- Rappelle-toi, on a corrigé ça plus tôt
 
-load_dotenv()  # Charger les variables d'environnement depuis le fichier .env
+# Charge les clés
+load_dotenv()
 
-# 1. Définition du format de sortie (Schéma)
+# --- Pas de "from main import..." ici ! ---
+
+# 1. Définition du format de sortie
 class ProductInfo(BaseModel):
     name: str = Field(description="Nom court de l'objet")
     category: str = Field(description="Catégorie (ex: Électronique, Outils, Vêtements)")
@@ -16,17 +19,23 @@ class ProductInfo(BaseModel):
     estimated_price: float = Field(description="Estimation du prix en CAD")
     description: str = Field(description="Courte description technique")
 
-# 2. Configuration du modèle (GPT-4o est recommandé pour la vision)
+# 2. Configuration du modèle
+if not os.getenv("OPENAI_API_KEY"):
+    print("ATTENTION: Pas de clé API trouvée dans .env")
+
 llm = ChatOpenAI(model="gpt-4o", temperature=0)
 structured_llm = llm.with_structured_output(ProductInfo)
 
 def analyze_image_with_agent(image_path):
-    """
-    Prend le chemin d'une image, l'analyse et retourne un dictionnaire de données.
-    """
-    # Encodage en base64 pour l'envoi à l'API
-    with open(image_path, "rb") as image_file:
-        image_data = base64.b64encode(image_file.read()).decode("utf-8")
+    print(f"Analyse de l'image : {image_path}") # Petit log pour t'aider
+    
+    # Encodage en base64
+    try:
+        with open(image_path, "rb") as image_file:
+            image_data = base64.b64encode(image_file.read()).decode("utf-8")
+    except FileNotFoundError:
+        print("Erreur: Image introuvable pour l'analyse")
+        return None
 
     message = HumanMessage(
         content=[
@@ -36,10 +45,8 @@ def analyze_image_with_agent(image_path):
     )
 
     try:
-        # L'IA analyse l'image
         result = structured_llm.invoke([message])
-        # On retourne le résultat sous forme de dictionnaire (plus facile pour le CSV)
         return result.dict()
     except Exception as e:
-        print(f"Erreur lors de l'analyse : {e}")
+        print(f"Erreur IA : {e}")
         return None
